@@ -128,7 +128,6 @@
   (if gemfile
       (if (file-readable-p gemfile)
           (progn
-            (setq bundle-gem-list-cache (make-hash-table))
             (setenv "BUNDLE_GEMFILE" gemfile)
             (message "BUNDLE_GEMFILE set to: %s." gemfile))
         (message "Warning: couldn't read file \"%s\". BUNDLE_GEMFILE unchanged." gemfile))
