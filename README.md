@@ -16,6 +16,8 @@ Interact with [Bundler](http://gembundler.com/) from Emacs.
    target buffer. This exists so the output won't mess with the default
    buffer used by *M-&* and `async-shell-command`.
 
+4) `bundle-config-use-local-gem` and `bundle-config-delete` run the corresponding Bundler commands with `shell-command`, because these commands do not output anything.
+
 ## Installation
 
     $ cd ~/.emacs.d/vendor
