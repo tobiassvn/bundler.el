@@ -152,6 +152,18 @@
   (interactive)
   (shell-command "bundle version"))
 
+;;;###autoload
+(defun bundle-config-use-local-gem (gem gem-location)
+  "Runs `bundle config local.GEM' with gem in GEM-LOCATION."
+  (interactive "sGem: \nDLocal gem directory: ")
+  (shell-command (format "bundle config local.%s %s" gem gem-location)))
+
+;;;###autoload
+(defun bundle-config-delete (config)
+  "Deletes selected bundle CONFIG."
+  (interactive (list (completing-read "bundle config option: " (split-string (shell-command-to-string "bundle config | grep -v '^Set' | sed '/^$/d'")))))
+  (shell-command (format "bundle config --delete %s" config)))
+
 (defun bundle-command (cmd)
   "Run cmd in an async buffer."
   (async-shell-command cmd "*Bundler*"))
