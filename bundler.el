@@ -6,7 +6,7 @@
 ;; URL: http://github.com/endofunky/bundler.el
 ;; Keywords: bundler ruby
 ;; Created: 31 Dec 2011
-;; Version: 1.1.1
+;; Version: 1.2.0
 ;; Package-Requires: ((inf-ruby "2.1") (cl-lib "0.5"))
 
 ;; This file is NOT part of GNU Emacs.
