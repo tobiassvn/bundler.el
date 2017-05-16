@@ -63,6 +63,10 @@
 (require 'cl-lib)
 (require 'inf-ruby)
 
+(defcustom bundle-use-vagrant nil
+  "Whether or not to use bundler through vagrant"
+  :type 'boolean)
+
 ;;;###autoload
 (defun bundle-open (gem-name)
   "Queries for a gem name and opens the location of the gem in dired."
@@ -154,7 +158,10 @@
 
 (defun bundle-command (cmd)
   "Run cmd in an async buffer."
-  (async-shell-command cmd "*Bundler*"))
+  (let ((cmd (if bundle-use-vagrant
+                 (format "vagrant ssh -c \"%s\"" cmd)
+               cmd)))
+    (async-shell-command cmd "*Bundler*")))
 
 (defun run-bundled-command (cmd &rest args)
   "Run bundle exec for the given command, optionally with args"
