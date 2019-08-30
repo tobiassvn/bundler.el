@@ -166,9 +166,12 @@
                     (format "vagrant ssh -c \"%s\"" cmd))
                    (bundle-docker-container
                     (format "docker-compose exec %s %s" bundle-docker-container cmd))
-                   (t cmd))))
-    (message (format "Running: %s" cmd))
-    (async-shell-command cmd "*Bundler*")))
+                   (t cmd)))
+        (dir (locate-dominating-file "." "Gemfile")))
+    (if (not dir) (error "Cannot find Gemfile!"))
+    (message (format "Running: %s in %s" cmd dir))
+    (let ((default-directory dir))
+      (async-shell-command cmd "*Bundler*"))))
 
 (defun run-bundled-command (cmd &rest args)
   "Run bundle exec for the given command, optionally with args"
