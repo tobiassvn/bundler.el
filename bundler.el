@@ -6,7 +6,7 @@
 ;; URL: http://github.com/endofunky/bundler.el
 ;; Keywords: bundler ruby
 ;; Created: 31 Dec 2011
-;; Version: 1.2.0
+;; Version: 1.3.0
 ;; Package-Requires: ((inf-ruby "2.1") (cl-lib "0.5"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -66,6 +66,10 @@
 (defcustom bundle-use-vagrant nil
   "Whether or not to use bundler through vagrant"
   :type 'boolean)
+
+(defcustom bundle-docker-container nil
+  "Name of the docker container to use, or nil to not use docker."
+  :type 'string)
 
 ;;;###autoload
 (defun bundle-open (gem-name)
@@ -158,9 +162,12 @@
 
 (defun bundle-command (cmd)
   "Run cmd in an async buffer."
-  (let ((cmd (if bundle-use-vagrant
-                 (format "vagrant ssh -c \"%s\"" cmd)
-               cmd)))
+  (let ((cmd (cond (bundle-use-vagrant
+                    (format "vagrant ssh -c \"%s\"" cmd))
+                   (bundle-docker-container
+                    (format "docker-compose exec %s %s" bundle-docker-container cmd))
+                   (t cmd))))
+    (message (format "Running: %s" cmd))
     (async-shell-command cmd "*Bundler*")))
 
 (defun run-bundled-command (cmd &rest args)
