@@ -94,7 +94,7 @@
 (defun bundle-install (&optional update-cmd-args)
   "Run bundle install for the current bundle."
   (interactive "P")
-  (let ((command "bundle install"))
+  (let ((command "bundle install --local"))
     ;; For customization of the command with prefix arg.
     (setq command (if update-cmd-args
                       (read-string "Run: " (concat command " "))
