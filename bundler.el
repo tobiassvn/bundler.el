@@ -91,10 +91,16 @@
   (bundle-command "bundle check"))
 
 ;;;###autoload
-(defun bundle-install ()
+(defun bundle-install (&optional update-cmd-args)
   "Run bundle install for the current bundle."
-  (interactive)
-  (bundle-command "bundle install"))
+  (interactive "P")
+  (let ((command "bundle install --local"))
+    ;; For customization of the command with prefix arg.
+    (setq command (if update-cmd-args
+                      (read-string "Run: " (concat command " "))
+                    command))
+
+    (bundle-command command)))
 
 ;;;###autoload
 (defun bundle-update (&optional update-cmd-args)
