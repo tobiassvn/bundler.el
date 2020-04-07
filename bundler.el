@@ -187,19 +187,16 @@ found."
                 "bundle info --path"))
          (bundler-stdout
           (shell-command-to-string
-           (format "%s %s" cmd (shell-quote-argument gem-name))))
-         (remote (file-remote-p default-directory)))
+           (format "%s %s" cmd (shell-quote-argument gem-name)))))
     (cond
      ((string-match "Could not locate Gemfile" bundler-stdout)
       'no-gemfile)
      ((string-match "Could not find " bundler-stdout)
       nil)
      (t
-      (concat remote
-              (replace-regexp-in-string
-               "Resolving dependencies...\\|The dependency .* will be unused by .*$\\|\n" ""
-               bundler-stdout)
-              "/")))))
+      (seq-find
+       (lambda (line) (string-match-p "^\\/" line))
+       (reverse (split-string bundler-stdout "[\n]")))))))
 
 (defvar bundle-gem-list-cache
   (make-hash-table)
