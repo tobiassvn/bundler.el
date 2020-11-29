@@ -156,9 +156,9 @@
   "Shows all gems that are part of the bundle, or the path to a given gem."
   (interactive)
   (let* ((ver (bundle-major-version))
-         (cmd (if (and ver (< 2 ver)
-                       "bundle show"
-                       "bundle list"))))
+         (cmd (if (and ver (< 2 ver))
+                  "bundle show"
+                "bundle list")))
     (bundle-command cmd)))
 
 ;;;###autoload
