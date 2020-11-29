@@ -113,6 +113,10 @@
   (interactive "sBundle Exec: ")
   (run-bundled-command command))
 
+(defvar bundle-gem-list-cache
+  (make-hash-table)
+  "Holds a hash table of gem lists per directory.")
+
 ;;;###autoload
 (defun bundle-gemfile (&optional gemfile)
   "Set BUNDLE_GEMFILE environment variable."
@@ -152,9 +156,9 @@
   "Shows all gems that are part of the bundle, or the path to a given gem."
   (interactive)
   (let* ((ver (bundle-major-version))
-         (cmd (if (and ver (< 2 ver)
-                       "bundle show"
-                       "bundle list"))))
+         (cmd (if (and ver (< 2 ver))
+                  "bundle show"
+                "bundle list")))
     (bundle-command cmd)))
 
 ;;;###autoload
@@ -200,10 +204,6 @@ found."
                "Resolving dependencies...\\|The dependency .* will be unused by .*$\\|\n" ""
                bundler-stdout)
               "/")))))
-
-(defvar bundle-gem-list-cache
-  (make-hash-table)
-  "Holds a hash table of gem lists per directory.")
 
 (cl-defun bundle-locate-gemfile (&optional (dir default-directory))
          (let ((has-gemfile (directory-files dir nil "^Gemfile$"))
